@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 
+const articlesRoutes = require('./api/routes/articles');
+const categoriesRoutes = require('./api/routes/categories');
+const usersRoutes = require('./api/routes/users');
+
 app.use(morgan("dev"));
 
 app.use(express.json());
@@ -19,17 +23,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', (req, res) => {
-    res.status(200).json({
-        message: 'Hello World 4'
-    })
-});
-
-app.post('/articles', (req, res) => {
-    res.status(200).json({
-        body: req.body
-    })
-});
+// Routes
+app.use('/articles', articlesRoutes);
+app.use('/categories', categoriesRoutes);
+app.use('/users', usersRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not Found');

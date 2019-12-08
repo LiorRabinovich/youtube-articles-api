@@ -46,29 +46,45 @@ module.exports = {
         });
     },
     updateCategory: (req, res) => {
-        const categoryId = req.params.categoryId
+        const categoryId = req.params.categoryId;
 
-        Category.update({_id: categoryId}, req.body).then(() => {
-            res.status(200).json({
-                message: 'Category Updated'
-            })
-        }).catch(error => {
-            res.status(500).json({
-                error
-            })
-        });
+        Category.findById(categoryId).then((category) => {
+            if (!category) {
+                return res.status(404).json({
+                    message: 'Category not found'
+                })
+            }
+        }).then(() => {
+            Category.update({ _id: categoryId }, req.body).then(() => {
+                res.status(200).json({
+                    message: 'Category Updated'
+                })
+            }).catch(error => {
+                res.status(500).json({
+                    error
+                })
+            });
+        })
     },
     deleteCategory: (req, res) => {
-        const categoryId = req.params.categoryId
+        const categoryId = req.params.categoryId;
 
-        Category.remove({_id: categoryId}).then(() => {
-            res.status(200).json({
-                message: `Category _id:${categoryId} Deleted`
-            })
-        }).catch(error => {
-            res.status(500).json({
-                error
-            })
-        });
+        Category.findById(categoryId).then((category) => {
+            if (!category) {
+                return res.status(404).json({
+                    message: 'Category not found'
+                })
+            }
+        }).then(() => {
+            Category.remove({ _id: categoryId }).then(() => {
+                res.status(200).json({
+                    message: `Category _id:${categoryId} Deleted`
+                })
+            }).catch(error => {
+                res.status(500).json({
+                    error
+                })
+            });
+        })
     }
 }

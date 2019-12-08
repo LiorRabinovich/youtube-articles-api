@@ -57,29 +57,68 @@ module.exports = {
         });
     },
     updateArticle: (req, res) => {
-        const articleId = req.params.articleId
+        const articleId = req.params.articleId;
+        const { categoryId } = req.body;
 
-        Article.update({_id: articleId}, req.body).then(() => {
-            res.status(200).json({
-                message: 'Article Updated'
-            })
-        }).catch(error => {
-            res.status(500).json({
-                error
-            })
-        });
+        Article.findById(articleId).then((article) => {
+            if (!article) {
+                return res.status(404).json({
+                    message: 'Article not found'
+                })
+            }
+        }).then(() => {
+            if (categoryId) {
+                return Category.findById(categoryId).then((category) => {
+                    if (!category) {
+                        return res.status(404).json({
+                            message: 'Category not found'
+                        })
+                    }
+
+                    return Article.update({ _id: articleId }, req.body);
+                }).then(() => {
+                    res.status(200).json({
+                        message: 'Article Updated'
+                    })
+                }).catch(error => {
+                    res.status(500).json({
+                        error
+                    })
+                });
+            }
+
+            Article.update({ _id: articleId }, req.body).then(() => {
+                res.status(200).json({
+                    message: 'Article Updated'
+                })
+            }).catch(error => {
+                res.status(500).json({
+                    error
+                })
+            });
+        })
+
+
     },
     deleteArticle: (req, res) => {
         const articleId = req.params.articleId
 
-        Article.remove({_id: articleId}).then(() => {
-            res.status(200).json({
-                message: `Article _id:${articleId} Deleted`
-            })
-        }).catch(error => {
-            res.status(500).json({
-                error
-            })
-        });
+        Article.findById(articleId).then((article) => {
+            if (!article) {
+                return res.status(404).json({
+                    message: 'Article not found'
+                })
+            }
+        }).then(() => {
+            Article.remove({ _id: articleId }).then(() => {
+                res.status(200).json({
+                    message: `Article _id:${articleId} Deleted`
+                })
+            }).catch(error => {
+                res.status(500).json({
+                    error
+                })
+            });
+        })
     }
 }

@@ -75,7 +75,7 @@ module.exports = {
                         })
                     }
 
-                    return Article.update({ _id: articleId }, req.body);
+                    return Article.updateOne({ _id: articleId }, req.body);
                 }).then(() => {
                     res.status(200).json({
                         message: 'Article Updated'
@@ -87,7 +87,7 @@ module.exports = {
                 });
             }
 
-            Article.update({ _id: articleId }, req.body).then(() => {
+            Article.updateOne({ _id: articleId }, req.body).then(() => {
                 res.status(200).json({
                     message: 'Article Updated'
                 })
@@ -110,7 +110,7 @@ module.exports = {
                 })
             }
         }).then(() => {
-            Article.remove({ _id: articleId }).then(() => {
+            Article.deleteOne({ _id: articleId }).then(() => {
                 res.status(200).json({
                     message: `Article _id:${articleId} Deleted`
                 })

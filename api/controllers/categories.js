@@ -55,7 +55,7 @@ module.exports = {
                 })
             }
         }).then(() => {
-            Category.update({ _id: categoryId }, req.body).then(() => {
+            Category.updateOne({ _id: categoryId }, req.body).then(() => {
                 res.status(200).json({
                     message: 'Category Updated'
                 })
@@ -76,7 +76,7 @@ module.exports = {
                 })
             }
         }).then(() => {
-            Category.remove({ _id: categoryId }).then(() => {
+            Category.deleteOne({ _id: categoryId }).then(() => {
                 res.status(200).json({
                     message: `Category _id:${categoryId} Deleted`
                 })

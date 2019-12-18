@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const checkAuth = require('./api/middlewares/checkAuth');
 
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@youtube-articles-api-vkfyt.mongodb.net/test?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
@@ -37,7 +38,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/articles', articlesRoutes);
-app.use('/categories', categoriesRoutes);
+app.use('/categories', checkAuth, categoriesRoutes);
 app.use('/users', usersRoutes);
 
 app.use((req, res, next) => {
